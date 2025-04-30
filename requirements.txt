@@ -2,6 +2,10 @@ streamlit
 matplotlib
 numpy
 pandas
+requests
+json
+datetime
+os
 seaborn
 geopandas[all]
 mapclassify
