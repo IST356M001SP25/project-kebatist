@@ -1,0 +1,12 @@
+streamlit
+matplotlib
+numpy
+pandas
+seaborn
+geopandas[all]
+mapclassify
+folium
+streamlit-folium
+streamlit-plotly-events
+plotly
+plotly_express
