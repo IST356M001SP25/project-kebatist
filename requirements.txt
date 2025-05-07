@@ -11,3 +11,7 @@ streamlit-folium
 streamlit-plotly-events
 plotly
 plotly_express
+playwright
+pytest
+zipfile
+importer
