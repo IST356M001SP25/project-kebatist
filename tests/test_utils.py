@@ -25,9 +25,12 @@ import sys
 import os
 import pytest
 import pandas as pd
+
+# Add the parent directory of utils.py to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Import functions from utils.py
 # tests/test_utils.py
-from code.utils import save_json, load_json, save_clean_csv, load_clean_csv
+from utils import save_json, load_json, save_clean_csv, load_clean_csv
 
 # Paths for testing
 RAW_PATH = "cache/raw_data.json"
@@ -57,7 +60,7 @@ def test_load_clean_csv():
     loaded_df = load_clean_csv(CLEAN_PATH)
     pd.testing.assert_frame_equal(loaded_df, sample_df, check_dtype=False)
 
-from code.utils import add_numbers, multiply_numbers
+from utils import add_numbers, multiply_numbers
 
 def test_add_numbers():
     result = add_numbers(3, 4)
