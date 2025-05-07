@@ -37,6 +37,6 @@ def show_dashboard(df):
 # Run the app
 if __name__ == "__main__":
     # Path to the transformed CSV file
-    transformed_csv_path = r"C:\Users\batis\IST 356 Program Tech\VS Code\project-kebatist\data\IMDB_Top_250_Transformed.csv"
+    transformed_csv_path = r"C:\Users\batis\IST 356 Program Tech\VS Code\project-kebatist\data\IMDB Top 250 Transformed.csv"
     df = load_data(transformed_csv_path)
     show_dashboard(df)
