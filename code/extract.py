@@ -1,73 +1,42 @@
-import requests
-
-# Add your API key here
-import requests
+import pandas as pd
 import json
 import os
 
-# Configuration
-API_URL = "https://cent.ischool-iot.net/api/weather/forecast"
-API_KEY = "89b6dc8fb35ed9372acafa46"  # Replace with your actual API key
-OUTPUT_DIR = "data"
-OUTPUT_FILE = "forecast_weather.json"
+# Set up cache folder path for saving data
+CACHE_PATH = os.path.join("cache", "C:\Users\batis\IST 356 Program Tech\VS Code\project-kebatist\cache\raw_data.json")
+DATA_PATH = os.path.join("data", "C:\Users\batis\IST 356 Program Tech\VS Code\project-kebatist\data\IMDB Top 250 Movies.csv")  # Replace with your actual file path
 
-# Parameters for the API call
-params = {
-    "latitude": 43.04,     # Example: Syracuse, NY
-    "longitude": -76.14,
-    "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
-    "timezone": "America/New_York"
-}
+def load_and_process_data():
+    # Load the CSV file into a pandas DataFrame
+    try:
+        df = pd.read_csv(DATA_PATH)
+        print(f"✅ Loaded {len(df)} records from {DATA_PATH}")
+    except Exception as e:
+        print(f"Error loading CSV file: {e}")
+        return []
 
-headers = {
-    "x-api-key": "89b6dc8fb35ed9372acafa46"
-}
+    # Select relevant columns for simplicity (you can adjust these as needed)
+    df_processed = df[['rank', 'name', 'year', 'rating', 'genre', 'certificate', 'run_time', 'tagline', 'budget', 'box_office', 'casts', 'directors', 'writers']]
 
-# Make sure the data folder exists
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+    # Convert DataFrame to a list of dictionaries
+    data = df_processed.to_dict(orient="records")
 
-# Make the API request
-response = requests.get(API_URL, params=params, headers=headers)
+    return data
 
-if response.status_code == 200:
-    data = response.json()
-    
-    # Save to file
-    output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
-    with open(output_path, "w") as f:
-        json.dump(data, f, indent=2)
-    
-    print(f"✅ Forecast data saved to {output_path}")
-else:
-    print(f"❌ Error fetching data: {response.status_code} - {response.text}")
-'''
-def get_weather_for_month(year, month):
-    url = "https://cent.ischool-iot.net/api/weather/forecast"
-    start_date = f"{year}-{month:01d}-01"
-    end_date = f"{year}-{month:12d}-28"  # Adjust the end date as needed
-    params = {
-        "start": start_date,
-        "end": end_date,
-        "lat": 43.0481,
-        "lon": -76.1474
-    }
-    headers = {
-        "x-api-key": "89b6dc8fb35ed9372acafa46"
-    }
-
-    response = requests.get(url, params=params, headers=headers)
-
-    if response.status_code == 200:
-        filename = f"historical_weather_{year}_{month:02d}.json"
-        with open(filename, "w") as f:
-            f.write(response.text)
-        print(f"✅ Data saved to {filename}")
-    else:
-        print("❌ Error:", response.status_code)
-        print(response.text)
+def save_to_cache(data, path=CACHE_PATH):
+    # Save the processed data to JSON
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        print(f"✅ Saved {len(data)} items to {CACHE_PATH}")
+    except Exception as e:
+        print(f"Error saving data to cache: {e}")
 
 if __name__ == "__main__":
-    for year in range(2023, 2024):  # Adjust year range as needed
-        for month in range(1, 13):
-            get_weather_for_month(year, month)
-'''
+    # Load and process the dataset
+    data = load_and_process_data()
+
+    # Save the processed data to cache
+    if data:
+        save_to_cache(data)
+
