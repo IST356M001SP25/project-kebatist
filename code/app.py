@@ -1,56 +1,42 @@
 import streamlit as st
 import pandas as pd
-import json
-import os
-import streamlit as st
-import pandas as pd
-import json
-import os
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-# Function to load multiple JSON files from the 'data' folder and cache the result
-@st.cache_data
-def load_multiple_files(file_pattern="historical_weather_*.json"):
-    all_data = []
-    # Specify the path to the 'data' folder
-    data_folder = "data"
-    files = [f for f in os.listdir(data_folder) if f.startswith("historical_weather") and f.endswith(".json")]
-    
-    if not files:
-        st.error("❌ No weather data files found in the 'data' folder. Please run extract.py to fetch the data.")
-        return None
-    
-    # Load each JSON file from the 'data' folder
-    for file in files:
-        file_path = os.path.join(data_folder, file)
-        with open(file_path, "r") as f:
-            data = json.load(f)
-            all_data.append(data["daily"])  # Assuming "daily" contains the actual weather data
-    
-    return all_data
+def load_data(file_path):
+    # Load the cleaned CSV data
+    return pd.read_csv(file_path)
 
-# Function to process data into DataFrame and cache the result
-# Function to process data into DataFrame and cache the result
-@st.cache_data
-def process_data(data):
-    try:
-        # Combine all data from different files into a single DataFrame
-        df = pd.concat([pd.DataFrame(d) for d in data], ignore_index=True)
-        df["time"] = pd.to_datetime(df["time"])  # Convert time column to datetime format
-        return df
-    except Exception as e:
-        st.error(f"Error processing data: {e}")
-        return None
+def plot_data(df):
+    # Example plot: Distribution of Ratings
+    plt.figure(figsize=(10,6))
+    sns.histplot(df['rating'], bins=20, kde=True, color='blue')
+    plt.title('Distribution of IMDB Movie Ratings')
+    plt.xlabel('Rating')
+    plt.ylabel('Frequency')
+    st.pyplot()
 
-# Streamlit UI
-st.title("📊 Historical Weather Dashboard")
+def show_dashboard(df):
+    # Display basic info and the first few rows
+    st.title("IMDB Top 250 Movies Dashboard")
+    st.write("This dashboard shows the top 250 movies from IMDB with ratings and other details.")
 
-# Load data from multiple files
-data = load_multiple_files()
+    # Display data preview
+    st.subheader('Data Preview')
+    st.write(df.head())
 
-if data:
-    # Process the loaded data into a DataFrame
-    df = process_data(data)
-    
-    if df is not None:
-        st.write("### Raw Data", df.head())
-        st.line_chart(df.set_index("time")[["snowfall_sum"]])  # Change column name based on your data
+    # Show a plot of the distribution of ratings
+    st.subheader('Rating Distribution')
+    plot_data(df)
+
+    # Show other insights (for example, average rating by genre)
+    st.subheader('Average Rating by Genre')
+    avg_rating_by_genre = df.groupby('genre')['rating'].mean().sort_values(ascending=False)
+    st.write(avg_rating_by_genre)
+
+# Run the app
+if __name__ == "__main__":
+    # Path to the transformed CSV file
+    transformed_csv_path = r"C:\Users\batis\IST 356 Program Tech\VS Code\project-kebatist\data\IMDB_Top_250_Transformed.csv"
+    df = load_data(transformed_csv_path)
+    show_dashboard(df)
