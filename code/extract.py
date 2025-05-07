@@ -3,8 +3,9 @@ import json
 import os
 
 # Set up cache folder path for saving data
-CACHE_PATH = os.path.join("cache", "C:\Users\batis\IST 356 Program Tech\VS Code\project-kebatist\cache\raw_data.json")
-DATA_PATH = os.path.join("data", "C:\Users\batis\IST 356 Program Tech\VS Code\project-kebatist\data\IMDB Top 250 Movies.csv")  # Replace with your actual file path
+CACHE_PATH = os.path.join("cache", "raw_data.json")
+# Ensure the cache directory exists
+DATA_PATH = os.path.join("data", "data\IMDB Top 250 Movies.csv")  # Replace with your actual file path
 
 def load_and_process_data():
     # Load the CSV file into a pandas DataFrame
