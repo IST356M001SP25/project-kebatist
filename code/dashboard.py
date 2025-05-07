@@ -1,5 +1,50 @@
 # code/dashboard.py
+# code/dashboard.py
 
+import streamlit as st
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load cleaned CSV
+CLEAN_PATH = os.path.join("cache", "clean_data.csv")
+
+@st.cache_data
+def load_data():
+    return pd.read_csv(CLEAN_PATH)
+
+df = load_data()
+
+st.title("🎬 Movie Dashboard")
+st.write("Explore top-rated movies using basic charts.")
+
+# Optional: Show raw data
+if st.checkbox("Show raw data"):
+    st.dataframe(df)
+
+# Year slider
+min_year = int(df["year"].min())
+max_year = int(df["year"].max())
+# lit and cool feature: year slider
+year_range = st.slider("Filter by Year", min_year, max_year, (min_year, max_year))
+filtered_df = df[(df["year"] >= year_range[0]) & (df["year"] <= year_range[1])]
+
+# Top 10 Movies Table
+st.subheader("🏆 Top 10 Movies")
+top_movies = filtered_df.sort_values(by="rating", ascending=False).head(10)
+st.table(top_movies[["name", "year", "rating"]])
+
+# Rating Distribution
+st.subheader("📊 Rating Distribution")
+fig, ax = plt.subplots()
+sns.histplot(filtered_df["rating"], bins=10, kde=True, ax=ax)
+ax.set_xlabel("Rating")
+ax.set_ylabel("Count")
+st.pyplot(fig)
+
+'''
+This script creates a Streamlit dashboard to visualize and analyze the diversity of movies and TV shows on streaming platforms.
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -70,4 +115,4 @@ st.pyplot(fig_genre_rating_boxplot.figure)
 # st.subheader("Map of Filming Locations")  
 # gdf = gpd.read_file('path_to_shapefile')  # Uncomment if you want to use geospatial data
 # st.map(gdf)
-
+'''
