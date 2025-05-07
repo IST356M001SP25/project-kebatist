@@ -57,8 +57,12 @@ def test_load_clean_csv():
     loaded_df = load_clean_csv(CLEAN_PATH)
     pd.testing.assert_frame_equal(loaded_df, sample_df, check_dtype=False)
 
-def add_numbers(a, b):
-    return a + b
+from code.utils import add_numbers, multiply_numbers
 
-def multiply_numbers(a, b):
-    return a * b
+def test_add_numbers():
+    result = add_numbers(3, 4)
+    assert result == 7
+
+def test_multiply_numbers():
+    result = multiply_numbers(3, 4)
+    assert result == 12

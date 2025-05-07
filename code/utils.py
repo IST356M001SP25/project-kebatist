@@ -25,3 +25,9 @@ def save_clean_csv(df, path=CLEAN_PATH):
 def load_clean_csv(path=CLEAN_PATH):
     """Load cleaned CSV into DataFrame."""
     return pd.read_csv(path)
+
+def add_numbers(a, b):
+    return a + b
+
+def multiply_numbers(a, b):
+    return a * b
