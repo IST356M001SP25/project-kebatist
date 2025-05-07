@@ -27,7 +27,7 @@ import pytest
 import pandas as pd
 # Import functions from utils.py
 # tests/test_utils.py
-from ..code.utils import save_json, load_json, save_clean_csv, load_clean_csv
+from code.utils import save_json, load_json, save_clean_csv, load_clean_csv
 
 # Paths for testing
 RAW_PATH = "cache/raw_data.json"
