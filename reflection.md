@@ -1,6 +1,6 @@
 # Reflection
 
-Student Name:  kebatist
+Student Name:  Katharine Batista
 Student Email:  kebatist@syr.edu
 
 ## Instructions

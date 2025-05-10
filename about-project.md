@@ -1,7 +1,7 @@
 # About My Project
 
-Student Name:  name
-Student Email:  email
+Student Name:  Katharine Batista
+Student Email:  kebatist@syr.edu
 
 ### What it does
 My project shows the top 250 movies in the last 100 years. The dataset is dervived from Kaggle.
